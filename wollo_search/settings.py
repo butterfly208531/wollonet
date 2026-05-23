@@ -97,6 +97,10 @@ SEARCH_RESULTS_PER_PAGE = 10
 INDEX_DATA_DIR = BASE_DIR / 'index_data'
 CORPUS_DIR = BASE_DIR / 'documents' / 'corpus'
 
+# Ensure logs directory exists
+LOGS_DIR = BASE_DIR / 'logs'
+LOGS_DIR.mkdir(exist_ok=True)
+
 # Logging
 LOGGING = {
     'version': 1,
@@ -111,7 +115,7 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs' / 'wollonet.log',
+            'filename': LOGS_DIR / 'wollonet.log',
             'formatter': 'verbose',
         },
         'console': {
