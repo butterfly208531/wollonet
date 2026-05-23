@@ -1,0 +1,193 @@
+{% extends 'search_app/base.html' %}
+{% load static %}
+
+{% block title %}{{ query }} — WolloNet Search{% endblock %}
+
+{% block body %}
+<!-- Top search bar -->
+<header class="results-header border-bottom bg-white sticky-top">
+  <div class="container-fluid px-3 py-2 d-flex align-items-center gap-3">
+    <!-- Logo -->
+    <a href="{% url 'search_app:home' %}" class="text-decoration-none flex-shrink-0 d-flex align-items-center gap-2">
+      {% load static %}
+      <img src="{% static 'wollo_logo.png' %}" alt="Wollo University" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" />
+      <span class="results-logo">
+        <span class="logo-w">W</span><span class="logo-o1">o</span><span class="logo-l">l</span><span class="logo-l2">l</span><span class="logo-o2">o</span><span class="logo-n">N</span><span class="logo-e">e</span><span class="logo-t">t</span>
+      </span>
+    </a>
+
+    <!-- Search form -->
+    <form action="{% url 'search_app:search' %}" method="get" class="flex-grow-1" id="resultsSearchForm" style="max-width:680px;">
+      <div class="results-search-box d-flex align-items-center">
+        <input
+          type="text"
+          name="q"
+          id="resultsQuery"
+          class="form-control border-0 shadow-none results-input"
+          value="{{ query }}"
+          autocomplete="off"
+          maxlength="500"
+          aria-label="Search query"
+        />
+        <button type="button" class="btn-clear-results" id="clearResultsBtn" aria-label="Clear">
+          <i class="bi bi-x-lg text-muted"></i>
+        </button>
+        <div class="divider-v mx-1"></div>
+        <button type="submit" class="btn-search-icon" aria-label="Search">
+          <i class="bi bi-search text-primary"></i>
+        </button>
+      </div>
+      <input type="hidden" name="model" value="{{ model }}" />
+      <div id="resultsValidationMsg" class="text-danger small mt-1" style="display:none;">Please enter a search query.</div>
+    </form>
+
+    <!-- Model toggle -->
+    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+      <a href="?q={{ query|urlencode }}&model=vsm"
+         class="model-btn {% if model == 'vsm' %}active{% endif %}">VSM</a>
+      <a href="?q={{ query|urlencode }}&model=bm25"
+         class="model-btn {% if model == 'bm25' %}active{% endif %}">BM25</a>
+    </div>
+  </div>
+</header>
+
+<!-- Main content -->
+<main class="container-fluid px-3" style="max-width:800px; margin-left:180px;">
+
+  {% if error == 'empty' %}
+    <div class="mt-5 text-center text-muted">
+      <i class="bi bi-search fs-1 d-block mb-3"></i>
+      <p>Please enter a search query.</p>
+      <a href="{% url 'search_app:home' %}" class="btn btn-outline-primary mt-2">Go to Search</a>
+    </div>
+
+  {% elif error == 'too_long' %}
+    <div class="mt-5 text-center text-muted">
+      <p class="text-danger">Your query is too long. Maximum {{ max_length }} characters allowed.</p>
+    </div>
+
+  {% elif error == 'no_index' %}
+    <div class="mt-5 text-center text-muted">
+      <i class="bi bi-database-x fs-1 d-block mb-3 text-warning"></i>
+      <p>No documents have been indexed yet.</p>
+      <p class="small">Run <code>python manage.py index_docs --dir documents/corpus</code> to index your corpus.</p>
+    </div>
+
+  {% elif error == 'server_error' %}
+    <div class="mt-5 text-center text-muted">
+      <p class="text-danger">Your request could not be completed. Please try again later.</p>
+    </div>
+
+  {% else %}
+    <!-- Stats bar -->
+    <div class="results-stats text-muted small mt-3 mb-3">
+      About <strong>{{ total_results }}</strong> result{{ total_results|pluralize }}
+      ({{ search_time_ms }} milliseconds)
+      &mdash; Model: <strong>{{ model|upper }}</strong>
+    </div>
+
+    {% if total_results == 0 %}
+      <!-- No results -->
+      <div class="mt-4">
+        <p class="text-muted">No results found for <strong>"{{ query }}"</strong>.</p>
+        <p class="text-muted small">No results found. Please try different or fewer keywords.</p>
+        <ul class="text-muted small mt-3">
+          <li>Make sure all words are spelled correctly.</li>
+          <li>Try different keywords.</li>
+          <li>Try more general keywords.</li>
+        </ul>
+      </div>
+
+    {% else %}
+      <!-- Result list -->
+      <div class="results-list">
+        {% for result in results %}
+        <div class="result-item mb-4">
+          <!-- URL breadcrumb -->
+          {% if result.doc.url %}
+          <div class="result-url text-success small mb-1">
+            <a href="{{ result.doc.url }}" target="_blank" class="text-decoration-none text-success">
+              {{ result.doc.url|truncatechars:70 }}
+            </a>
+          </div>
+          {% endif %}
+
+          <!-- Title -->
+          <h3 class="result-title mb-1">
+            <a href="{% url 'search_app:document' result.doc.id %}?q={{ query|urlencode }}"
+               class="text-decoration-none result-title-link">
+              {{ result.title }}
+            </a>
+          </h3>
+
+          <!-- Snippet -->
+          <p class="result-snippet text-muted mb-1">{{ result.snippet }}</p>
+
+          <!-- Score badge -->
+          <span class="score-badge">
+            Score: {{ result.score }}
+          </span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Pagination -->
+      {% if page_obj.paginator.num_pages > 1 %}
+      <nav aria-label="Search results pages" class="mt-4 mb-5">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?q={{ query|urlencode }}&model={{ model }}&page={{ page_obj.previous_page_number }}">
+                <i class="bi bi-chevron-left"></i> Previous
+              </a>
+            </li>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <li class="page-item">
+                <a class="page-link" href="?q={{ query|urlencode }}&model={{ model }}&page={{ num }}">{{ num }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?q={{ query|urlencode }}&model={{ model }}&page={{ page_obj.next_page_number }}">
+                Next <i class="bi bi-chevron-right"></i>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+
+    {% endif %}
+  {% endif %}
+
+</main>
+
+<script>
+  // Clear button
+  const clearBtn = document.getElementById('clearResultsBtn');
+  const input = document.getElementById('resultsQuery');
+  if (clearBtn && input) {
+    clearBtn.addEventListener('click', function() {
+      input.value = '';
+      input.focus();
+    });
+  }
+
+  // Validate on submit
+  document.getElementById('resultsSearchForm').addEventListener('submit', function(e) {
+    const q = input.value.trim();
+    if (!q) {
+      e.preventDefault();
+      document.getElementById('resultsValidationMsg').style.display = 'block';
+      input.focus();
+    }
+  });
+</script>
+{% endblock %}

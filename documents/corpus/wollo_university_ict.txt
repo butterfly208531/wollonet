@@ -1,0 +1,24 @@
+Wollo University Information and Communication Technology
+
+Wollo University has invested significantly in Information and Communication Technology (ICT) infrastructure to support teaching, learning, research, and administration.
+
+ICT Infrastructure:
+The university has a modern data center that hosts servers for the university's information systems. The campus is connected by a high-speed fiber optic network that provides internet access to all buildings. The university has computer laboratories with hundreds of computers available for student use.
+
+University Management Information System:
+Wollo University uses a University Management Information System (UMIS) to manage student registration, academic records, finance, human resources, and other administrative functions. Students can access their academic records, register for courses, and pay fees online through the student portal.
+
+E-Learning:
+The university has implemented an e-learning platform that allows faculty to post course materials, assignments, and grades online. Students can access learning resources from anywhere using the internet. The e-learning platform has been particularly useful during periods when face-to-face teaching is not possible.
+
+Computer Science and IT Programs:
+The Department of Computer Science and the Department of Information Technology in the College of Natural and Computational Sciences offer undergraduate programs that train students in programming, software development, database management, networking, and cybersecurity.
+
+Software Engineering:
+The Department of Software Engineering in the College of Engineering and Technology offers a program focused on the design, development, testing, and maintenance of software systems. Graduates work as software developers, system analysts, and project managers in technology companies and government organizations.
+
+Digital Library:
+Wollo University has a digital library that provides access to thousands of electronic books, journals, and research papers. Students and faculty can access the digital library resources from on-campus computers and remotely through the internet.
+
+WolloNet Search Engine:
+The WolloNet Search Engine is a research project developed at Wollo University as part of the Information Storage and Retrieval course. The system demonstrates key concepts in information retrieval including text preprocessing, inverted indexing, TF-IDF weighting, and BM25 ranking. The project is designed to support search in local languages including Amharic and English.

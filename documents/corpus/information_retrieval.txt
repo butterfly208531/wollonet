@@ -1,0 +1,30 @@
+Information Retrieval Systems
+
+Information retrieval (IR) is the activity of obtaining information system resources that are relevant to an information need from a collection of those resources. Searches can be based on full-text or other content-based indexing.
+
+Information retrieval is the science of searching for information in a document, searching for documents themselves, and also searching for the metadata that describes data, and for databases of texts, images or sounds.
+
+Key Concepts in Information Retrieval:
+
+1. Inverted Index
+An inverted index is a database index storing a mapping from content, such as words or numbers, to its locations in a document or a set of documents. The purpose of an inverted index is to allow fast full-text searches, at a cost of increased processing when a document is added to the database.
+
+2. TF-IDF (Term Frequency-Inverse Document Frequency)
+TF-IDF is a numerical statistic that is intended to reflect how important a word is to a document in a collection or corpus. It is often used as a weighting factor in searches of information retrieval, text mining, and user modeling.
+
+3. Vector Space Model (VSM)
+The vector space model is an algebraic model for representing text documents as vectors of identifiers. It is used in information filtering, information retrieval, indexing and relevancy rankings.
+
+4. BM25 (Best Match 25)
+BM25 is a bag-of-words retrieval function that ranks a set of documents based on the query terms appearing in each document, regardless of their proximity within the document. It is a family of scoring functions with slightly different components and parameters.
+
+5. Precision and Recall
+Precision is the fraction of retrieved documents that are relevant to the query. Recall is the fraction of the relevant documents that are successfully retrieved.
+
+Applications of Information Retrieval:
+- Web search engines (Google, Bing, Yahoo)
+- Document management systems
+- Digital libraries
+- Email search
+- Legal document search
+- Medical information retrieval

@@ -1,0 +1,36 @@
+Machine Learning and Artificial Intelligence
+
+Machine learning is a method of data analysis that automates analytical model building. It is based on the idea that systems can learn from data, identify patterns and make decisions with minimal human intervention.
+
+Types of Machine Learning:
+
+1. Supervised Learning
+In supervised learning, the algorithm is trained on labeled data. The algorithm learns to map input data to output labels. Examples include classification and regression problems.
+
+2. Unsupervised Learning
+In unsupervised learning, the algorithm is trained on unlabeled data. The algorithm discovers hidden patterns or data groupings without the need for human intervention. Examples include clustering and dimensionality reduction.
+
+3. Reinforcement Learning
+In reinforcement learning, an agent learns to make decisions by performing actions in an environment to maximize cumulative reward. Examples include game playing and robotics.
+
+Key Algorithms:
+
+- Linear Regression: Used for predicting continuous values
+- Logistic Regression: Used for binary classification
+- Decision Trees: Tree-like model of decisions
+- Random Forest: Ensemble of decision trees
+- Support Vector Machines (SVM): Used for classification and regression
+- Neural Networks: Inspired by the human brain
+- K-Means Clustering: Unsupervised clustering algorithm
+- Naive Bayes: Probabilistic classifier
+
+Applications of Machine Learning:
+- Natural Language Processing (NLP)
+- Computer Vision
+- Speech Recognition
+- Recommendation Systems
+- Fraud Detection
+- Medical Diagnosis
+- Autonomous Vehicles
+
+Python libraries commonly used for machine learning include scikit-learn, TensorFlow, PyTorch, and Keras.

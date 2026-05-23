@@ -1,0 +1,70 @@
+{% extends 'search_app/base.html' %}
+{% load static %}
+
+{% block title %}{{ doc.title }} — WolloNet{% endblock %}
+
+{% block body %}
+<!-- Header -->
+<header class="results-header border-bottom bg-white sticky-top">
+  <div class="container-fluid px-3 py-2 d-flex align-items-center gap-3">
+    <a href="{% url 'search_app:home' %}" class="text-decoration-none flex-shrink-0 d-flex align-items-center gap-2">
+      {% load static %}
+      <img src="{% static 'wollo_logo.png' %}" alt="Wollo University" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" />
+      <span class="results-logo">
+        <span class="logo-w">W</span><span class="logo-o1">o</span><span class="logo-l">l</span><span class="logo-l2">l</span><span class="logo-o2">o</span><span class="logo-n">N</span><span class="logo-e">e</span><span class="logo-t">t</span>
+      </span>
+    </a>
+    {% if query %}
+    <a href="{% url 'search_app:search' %}?q={{ query|urlencode }}" class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-arrow-left"></i> Back to results
+    </a>
+    {% endif %}
+  </div>
+</header>
+
+<main class="container py-4" style="max-width:800px;">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb small">
+      <li class="breadcrumb-item"><a href="{% url 'search_app:home' %}">Home</a></li>
+      {% if query %}
+      <li class="breadcrumb-item">
+        <a href="{% url 'search_app:search' %}?q={{ query|urlencode }}">Results for "{{ query }}"</a>
+      </li>
+      {% endif %}
+      <li class="breadcrumb-item active" aria-current="page">{{ doc.title|truncatechars:50 }}</li>
+    </ol>
+  </nav>
+
+  <!-- Document card -->
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+      <h1 class="h3 mb-2">{{ doc.title }}</h1>
+
+      <div class="d-flex flex-wrap gap-3 text-muted small mb-3">
+        {% if doc.pub_date %}
+          <span><i class="bi bi-calendar3"></i> {{ doc.pub_date|date:"N j, Y" }}</span>
+        {% endif %}
+        {% if doc.url %}
+          <span>
+            <i class="bi bi-link-45deg"></i>
+            <a href="{{ doc.url }}" target="_blank" class="text-decoration-none">{{ doc.url|truncatechars:60 }}</a>
+          </span>
+        {% endif %}
+        <span>
+          <i class="bi bi-file-text"></i>
+          {{ doc.raw_text|length }} characters
+        </span>
+        <span>
+          <i class="bi bi-check-circle {% if doc.is_indexed %}text-success{% else %}text-warning{% endif %}"></i>
+          {% if doc.is_indexed %}Indexed{% else %}Not indexed{% endif %}
+        </span>
+      </div>
+
+      <hr />
+
+      <div class="document-body" style="white-space: pre-wrap; line-height: 1.8; font-size: 0.95rem;">{{ doc.raw_text }}</div>
+    </div>
+  </div>
+</main>
+{% endblock %}

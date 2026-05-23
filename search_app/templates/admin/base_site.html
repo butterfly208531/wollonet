@@ -1,0 +1,458 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | WolloNet Admin{% endblock %}
+
+{% block dark_mode_vars %}{% endblock %}
+{% block dark_mode_toggle %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name" style="display:flex;align-items:center;gap:10px;">
+  <a href="{% url 'admin:index' %}" style="display:flex;align-items:center;gap:10px;">
+    <img src="{% static 'search_app/wollo_logo.png' %}" alt="Wollo University"
+         style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.4);" />
+    WolloNet Administration
+  </a>
+</h1>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Block Django's built-in dark mode -->
+<style> #django-admin-theme-toggle, #django-admin-theme-toggle + *, [data-theme-toggle], .theme-toggle { display: none !important; visibility: hidden !important; } </style>
+<style>
+/* ═══════════════════════════════════════════════
+   WolloNet Admin — Professional Blue & Black
+═══════════════════════════════════════════════ */
+
+:root {
+  --blue:        #1a56db;
+  --blue-dark:   #1e40af;
+  --blue-light:  #eff6ff;
+  --blue-mid:    #dbeafe;
+  --black:       #111827;
+  --surface:     #ffffff;
+  --bg:          #f3f4f6;
+  --border:      #e5e7eb;
+  --text:        #1f2937;
+  --text-sub:    #374151;
+  --text-muted:  #6b7280;
+}
+
+* { font-family: 'Inter','Segoe UI',system-ui,sans-serif !important; }
+
+body {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  transition: background .3s, color .3s;
+}
+
+/* ── Header ── */
+#header {
+  background: var(--black) !important;
+  padding: 0 28px !important;
+  height: 58px !important;
+  display: flex !important;
+  align-items: center !important;
+  box-shadow: 0 2px 16px rgba(0,0,0,.5) !important;
+  border-bottom: 3px solid var(--blue) !important;
+  position: relative !important;
+}
+
+#branding h1,
+#branding h1 a,
+#branding h1 a:link,
+#branding h1 a:visited {
+  color: #fff !important;
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  letter-spacing: .3px !important;
+  text-decoration: none !important;
+}
+
+#user-tools { color: #9ca3af !important; font-size: .8rem !important; }
+#user-tools a {
+  color: #d1d5db !important;
+  text-decoration: none !important;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  border: 1px solid #374151 !important;
+  margin-left: 6px !important;
+  transition: all .2s !important;
+  font-weight: 500 !important;
+}
+#user-tools a:hover {
+  background: #1f2937 !important;
+  color: #fff !important;
+  border-color: var(--blue) !important;
+}
+
+/* ── Breadcrumbs ── */
+div.breadcrumbs {
+  background: var(--surface) !important;
+  color: var(--text-sub) !important;
+  padding: 9px 28px !important;
+  font-size: .82rem !important;
+  font-weight: 500 !important;
+  border-bottom: 1px solid var(--border) !important;
+  transition: background .3s;
+}
+div.breadcrumbs a { color: var(--blue) !important; text-decoration: none !important; }
+div.breadcrumbs a:hover { text-decoration: underline !important; }
+
+/* ── Page title ── */
+#content h1 {
+  font-size: 1.45rem !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+  margin-bottom: 20px !important;
+  padding-bottom: 10px !important;
+  border-bottom: 2px solid var(--blue-mid) !important;
+}
+#content { padding: 22px 28px !important; }
+
+/* ── Module cards ── */
+.module {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 8px rgba(0,0,0,.07) !important;
+  margin-bottom: 18px !important;
+  transition: box-shadow .2s, background .3s !important;
+}
+.module:hover { box-shadow: 0 4px 20px rgba(0,0,0,.12) !important; }
+
+.module caption, .module h2, .module > h2:first-child,
+#nav-sidebar .module h2, .module > h3 {
+  background: var(--black) !important;
+  color: #fff !important;
+  font-size: .72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.2px !important;
+  text-transform: uppercase !important;
+  padding: 12px 18px !important;
+  border: none !important;
+  margin: 0 !important;
+  border-left: 4px solid var(--blue) !important;
+}
+
+.module table tr td, .module table tr th {
+  padding: 12px 18px !important;
+  border-bottom: 1px solid var(--border) !important;
+  font-size: .88rem !important;
+  color: var(--text-sub) !important;
+  vertical-align: middle !important;
+  background: var(--surface) !important;
+  transition: background .2s !important;
+}
+.module table tr:last-child td,
+.module table tr:last-child th { border-bottom: none !important; }
+.module table tr:hover td,
+.module table tr:hover th { background: var(--blue-light) !important; }
+
+/* ── Change list table ── */
+#result_list {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 8px rgba(0,0,0,.07) !important;
+  border: 1px solid var(--border) !important;
+}
+#result_list thead th {
+  background: var(--black) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: .76rem !important;
+  letter-spacing: .8px !important;
+  text-transform: uppercase !important;
+  padding: 12px 16px !important;
+  border: none !important;
+}
+#result_list thead th a,
+#result_list thead th a:link,
+#result_list thead th a:visited { color: #d1d5db !important; }
+#result_list thead th a:hover { color: #fff !important; }
+#result_list tbody tr td {
+  padding: 10px 16px !important;
+  border-bottom: 1px solid var(--border) !important;
+  font-size: .88rem !important;
+  color: var(--text-sub) !important;
+  background: var(--surface) !important;
+  transition: background .15s !important;
+}
+#result_list tbody tr:last-child td { border-bottom: none !important; }
+#result_list tbody tr:hover td { background: var(--blue-light) !important; }
+#result_list tbody tr.selected td { background: var(--blue-mid) !important; }
+
+/* ── Links ── */
+a:link, a:visited { color: var(--blue) !important; }
+a:hover { color: var(--blue-dark) !important; }
+
+/* ══ ADD LINK — complete reset + rebuild ══ */
+/* Step 1: kill Django's sprite trick globally */
+a.addlink {
+  background-color: var(--blue) !important;
+  background-image: none !important;
+  text-indent: 0 !important;
+  color: #fff !important;
+  display: inline-block !important;
+  padding: 5px 14px !important;
+  border-radius: 6px !important;
+  font-size: .8rem !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  line-height: 1.6 !important;
+  height: auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+  vertical-align: middle !important;
+  letter-spacing: .2px !important;
+  transition: background .2s !important;
+}
+a.addlink:hover {
+  background-color: var(--blue-dark) !important;
+  color: #fff !important;
+}
+
+/* ══ CHANGE LINK — clean outlined style ══ */
+a.changelink {
+  background-color: var(--surface) !important;
+  background-image: none !important;
+  text-indent: 0 !important;
+  color: var(--blue) !important;
+  display: inline-block !important;
+  padding: 4px 12px !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--blue-mid) !important;
+  font-size: .8rem !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  line-height: 1.6 !important;
+  height: auto !important;
+  width: auto !important;
+  overflow: visible !important;
+  vertical-align: middle !important;
+  transition: all .2s !important;
+}
+a.changelink:hover {
+  background-color: var(--blue-light) !important;
+  border-color: var(--blue) !important;
+  color: var(--blue-dark) !important;
+}
+
+/* Remove any ::before pseudo content */
+a.addlink::before,
+a.changelink::before { content: none !important; }
+
+/* ── Buttons ── */
+.button, input[type=submit], input[type=button],
+.submit-row input, a.button {
+  background: var(--blue) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: .88rem !important;
+  padding: 9px 20px !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 6px rgba(26,86,219,.25) !important;
+  transition: all .2s !important;
+}
+.button:hover, input[type=submit]:hover {
+  background: var(--blue-dark) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(26,86,219,.35) !important;
+}
+.deletelink, .deletelink-box a {
+  background: #1f2937 !important;
+  border: 1px solid #374151 !important;
+  box-shadow: none !important;
+}
+.deletelink:hover { background: #111827 !important; }
+
+/* ── Form fields ── */
+.form-row { padding: 12px 0 !important; border-bottom: 1px solid var(--border) !important; }
+.form-row:last-child { border-bottom: none !important; }
+.form-row label { color: var(--text) !important; font-weight: 500 !important; font-size: .88rem !important; }
+.form-row input[type=text], .form-row input[type=email],
+.form-row input[type=url], .form-row input[type=password],
+.form-row input[type=number], .form-row textarea, .form-row select {
+  border: 1.5px solid var(--border) !important;
+  border-radius: 8px !important;
+  padding: 9px 13px !important;
+  font-size: .9rem !important;
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  transition: border-color .2s, box-shadow .2s !important;
+  max-width: 600px !important;
+}
+.form-row input:focus, .form-row textarea:focus, .form-row select:focus {
+  border-color: var(--blue) !important;
+  box-shadow: 0 0 0 3px rgba(26,86,219,.12) !important;
+  outline: none !important;
+}
+
+/* ── Toolbar ── */
+#toolbar { background: var(--surface) !important; border-bottom: 1px solid var(--border) !important; padding: 10px 20px !important; }
+#toolbar form input[type=text] {
+  border: 1.5px solid var(--border) !important;
+  border-radius: 8px !important;
+  padding: 7px 14px !important;
+  font-size: .88rem !important;
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+#toolbar form input[type=text]:focus {
+  border-color: var(--blue) !important;
+  box-shadow: 0 0 0 3px rgba(26,86,219,.12) !important;
+  outline: none !important;
+  background: var(--surface) !important;
+}
+
+/* ── Sidebar ── */
+#nav-sidebar { background: var(--surface) !important; border-right: 1px solid var(--border) !important; transition: background .3s !important; }
+#nav-sidebar input[type=text] { display: none !important; }
+#toggle-nav-sidebar { display: none !important; }
+
+/* ── Recent actions ── */
+#recent-actions-module {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 8px rgba(0,0,0,.07) !important;
+  transition: background .3s !important;
+}
+#recent-actions-module h2 {
+  background: var(--black) !important;
+  color: #fff !important;
+  font-size: .72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.2px !important;
+  text-transform: uppercase !important;
+  padding: 12px 18px !important;
+  margin: 0 !important;
+  border-left: 4px solid var(--blue) !important;
+}
+#recent-actions-module h3 {
+  color: var(--text-muted) !important;
+  font-size: .72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: .8px !important;
+  text-transform: uppercase !important;
+  padding: 10px 18px 4px !important;
+  margin: 0 !important;
+  background: var(--surface) !important;
+}
+#recent-actions-module ul { list-style: none !important; padding: 0 !important; margin: 0 !important; }
+#recent-actions-module ul li {
+  padding: 10px 18px !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  outline: none !important;
+  background: var(--surface) !important;
+  transition: background .15s !important;
+  display: block !important;
+  margin: 0 !important;
+}
+#recent-actions-module ul li:last-child { border-bottom: none !important; }
+#recent-actions-module ul li:hover { background: var(--blue-light) !important; }
+
+/* Reset all links inside recent actions to plain text */
+#recent-actions-module a,
+#recent-actions-module a.addlink,
+#recent-actions-module a.changelink,
+#recent-actions-module a.deletelink,
+#recent-actions-module ul li.addlink,
+#recent-actions-module ul li.changelink,
+#recent-actions-module ul li.deletelink {
+  background: none !important;
+  background-image: none !important;
+  background-color: transparent !important;
+  color: var(--text) !important;
+  font-weight: 500 !important;
+  font-size: .85rem !important;
+  text-decoration: none !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  display: inline !important;
+  text-indent: 0 !important;
+  height: auto !important;
+  width: auto !important;
+  line-height: inherit !important;
+  letter-spacing: normal !important;
+  outline: none !important;
+}
+#recent-actions-module a::before,
+#recent-actions-module a.addlink::before,
+#recent-actions-module a.changelink::before { content: none !important; }
+#recent-actions-module a:hover { color: var(--blue) !important; text-decoration: underline !important; }
+#recent-actions-module .mini { color: var(--text-muted) !important; font-size: .75rem !important; display: block !important; margin-top: 2px !important; }
+
+/* ── Messages ── */
+ul.messagelist { padding: 0 !important; margin: 0 0 14px !important; }
+ul.messagelist li { border-radius: 8px !important; padding: 11px 16px !important; margin-bottom: 8px !important; font-size: .88rem !important; font-weight: 500 !important; border: none !important; }
+ul.messagelist li.success { background: #f0fdf4 !important; color: #166534 !important; border-left: 4px solid #22c55e !important; }
+ul.messagelist li.error { background: #fef2f2 !important; color: #991b1b !important; border-left: 4px solid #ef4444 !important; }
+ul.messagelist li.warning { background: #fffbeb !important; color: #92400e !important; border-left: 4px solid #f59e0b !important; }
+
+/* ── Paginator ── */
+.paginator { background: var(--bg) !important; border-top: 1px solid var(--border) !important; padding: 10px 18px !important; font-size: .85rem !important; color: var(--text-sub) !important; }
+.paginator a { color: var(--blue) !important; font-weight: 600 !important; padding: 3px 9px !important; border-radius: 5px !important; }
+.paginator a:hover { background: var(--blue-mid) !important; }
+.paginator .this-page { background: var(--blue) !important; color: #fff !important; padding: 3px 9px !important; border-radius: 5px !important; font-weight: 600 !important; }
+
+/* ── Submit row ── */
+.submit-row { background: var(--bg) !important; border-top: 1px solid var(--border) !important; padding: 12px 18px !important; display: flex !important; gap: 10px !important; align-items: center !important; }
+
+/* ── Object tools ── */
+.object-tools a { background: var(--black) !important; border-radius: 6px !important; color: #fff !important; font-size: .78rem !important; font-weight: 600 !important; padding: 6px 14px !important; text-decoration: none !important; border: 1px solid #374151 !important; transition: all .2s !important; }
+.object-tools a:hover { background: var(--blue) !important; border-color: var(--blue) !important; color: #fff !important; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+/* ── Hide Django's built-in theme toggle — all selectors ── */
+#toggle-nav-sidebar,
+.theme-toggle,
+.theme-toggle *,
+[data-theme-toggle],
+button.theme-toggle,
+li.theme-toggle,
+#user-tools .theme-toggle,
+button[title*="theme"],
+button[title*="Theme"],
+button[title*="Toggle"],
+#nav-sidebar-toggle,
+.theme-toggle-button,
+#django-admin-theme-toggle {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+</style>
+{% endblock %}
+
+{% block footer %}
+{{ block.super }}
+<script>
+window.addEventListener('load', function() {
+  document.querySelectorAll('.theme-toggle, [data-theme-toggle]').forEach(function(el) {
+    el.remove();
+  });
+});
+</script>
+{% endblock %}
+

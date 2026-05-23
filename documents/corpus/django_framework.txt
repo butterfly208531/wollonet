@@ -1,0 +1,27 @@
+Django Web Framework
+
+Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design. Built by experienced developers, it takes care of much of the hassle of web development, so you can focus on writing your app without needing to reinvent the wheel.
+
+Django follows the Model-View-Template (MVT) architectural pattern. It is free and open source, has a thriving and active community, great documentation, and many options for free and paid-for support.
+
+Key Features of Django:
+
+1. ORM (Object-Relational Mapping)
+Django comes with a powerful ORM that lets you interact with your database using Python code instead of SQL. It supports multiple database backends including SQLite, PostgreSQL, MySQL, and Oracle.
+
+2. Admin Interface
+Django automatically generates a production-ready administrative interface. You can use it to manage your application data without writing any code.
+
+3. URL Routing
+Django uses a clean URL routing system. You define URL patterns in a urls.py file and map them to view functions or class-based views.
+
+4. Template Engine
+Django has its own template language that is designed to strike a balance between power and ease. It is designed to feel comfortable to those used to working with HTML.
+
+5. Security
+Django provides built-in protection against many common security threats including SQL injection, cross-site scripting, cross-site request forgery, and clickjacking.
+
+6. Scalability
+Django uses a shared-nothing architecture, which means you can add hardware at any level — database servers, caching servers, or web/application servers.
+
+Django is used by many large websites including Instagram, Pinterest, Disqus, Mozilla, The Washington Times, and Bitbucket.

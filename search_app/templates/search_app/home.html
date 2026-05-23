@@ -1,0 +1,103 @@
+{% extends 'search_app/base.html' %}
+{% load static %}
+
+{% block title %}WolloNet — Search{% endblock %}
+
+{% block body %}
+<div class="home-page d-flex flex-column align-items-center justify-content-center min-vh-100">
+
+  <!-- Logo -->
+  <div class="text-center mb-5" style="animation: fadeInDown 0.6s ease;">
+    <div class="d-flex align-items-center justify-content-center gap-3 mb-2">
+      {% load static %}
+      <img src="{% static 'wollo_logo.png' %}" alt="Wollo University" class="home-logo-img" />
+      <div class="text-start">
+        <h1 class="wollonet-logo mb-0">
+          <span class="logo-w">W</span><span class="logo-o1">o</span><span class="logo-l">l</span><span class="logo-l2">l</span><span class="logo-o2">o</span><span class="logo-n">N</span><span class="logo-e">e</span><span class="logo-t">t</span>
+        </h1>
+        <p class="home-subtitle mb-0">Local Language Search Engine &mdash; Wollo University</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search form -->
+  <form action="{% url 'search_app:search' %}" method="get"
+        class="home-search-form w-100" id="homeSearchForm"
+        style="animation: fadeInUp 0.6s ease;">
+
+    <div class="search-box-wrapper mx-auto">
+      <div class="search-input-group">
+        <i class="bi bi-search search-icon"></i>
+        <input
+          type="text"
+          name="q"
+          id="homeQuery"
+          class="search-input"
+          placeholder="Search in Amharic, English, or any language..."
+          autocomplete="off"
+          maxlength="500"
+          aria-label="Search query"
+        />
+        <button type="button" class="btn-clear" id="clearBtn" aria-label="Clear" style="display:none;">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <input type="hidden" name="model" value="vsm" />
+
+    <div class="text-center mt-4" style="animation: fadeInUp 0.8s ease;">
+      <button type="submit" class="btn-search-main">
+        <i class="bi bi-search"></i> WolloNet Search
+      </button>
+    </div>
+  </form>
+
+  <!-- Footer -->
+  <footer class="home-footer position-absolute bottom-0 w-100 text-center py-3">
+    WolloNet &copy; 2024 &mdash; Information Retrieval Course Project &mdash; Wollo University
+  </footer>
+</div>
+
+<style>
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+  const q = document.getElementById('homeQuery');
+  const clearBtn = document.getElementById('clearBtn');
+
+  q.addEventListener('input', function () {
+    clearBtn.style.display = this.value ? 'inline' : 'none';
+  });
+  clearBtn.addEventListener('click', function () {
+    q.value = '';
+    clearBtn.style.display = 'none';
+    q.focus();
+  });
+
+  document.getElementById('homeSearchForm').addEventListener('submit', function (e) {
+    if (!q.value.trim()) {
+      e.preventDefault();
+      q.focus();
+      q.style.animation = 'shake 0.3s ease';
+      setTimeout(() => q.style.animation = '', 400);
+    }
+  });
+</script>
+
+<style>
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25%      { transform: translateX(-6px); }
+  75%      { transform: translateX(6px); }
+}
+</style>
+{% endblock %}
